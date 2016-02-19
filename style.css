@@ -1,0 +1,219 @@
+/*
+	Theme Name: CP Sharp
+	Description: CP Sharp custom theme
+	Author: CP Sharp, LLC
+	Author URI: http://www.cpsharp.net/
+
+	Version: 1.0
+
+	Tags: cpsharp
+
+	Template: genesis
+	Template Version: 2.1
+
+	License: GPL-2.0+
+	License URI: http://www.opensource.org/licenses/gpl-license.php
+*/
+
+
+/* desktop */
+@media only screen and (min-width: 1001px) {
+	body{
+		font-size: 1em;
+	}
+
+	#header {
+		max-height: 125px;
+		line-height: 125px;
+		text-align: center;
+	}
+
+	#header img{
+		margin-left: 3%;
+		max-height: 125px;
+		margin-right: -7.5%;
+	}
+
+	#header .title{
+ 		font-size: 2em;
+		font-weight: 200;
+		display: inline-block;
+		margin-left: 50px;
+		margin-right: 50px;
+		color: rgb(255, 175, 0);
+	}
+
+	#socialmedia {
+		float: right;
+    		margin-right: 2%;
+    		position: absolute;
+    		right: 0;
+    		margin-top: 1.75%;
+	}
+
+	#socialmedia a{
+    		filter: gray; /* IE6-9 */
+    		opacity: 0.5;
+    		-webkit-filter: opacity(0.5) grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+		-webkit-transition: all .5s ease; /* Fade to color for Chrome and Safari */
+		transition: all .5s ease;
+		padding-bottom: 20%;
+    		padding-top: 20%;
+    		display:block;
+	}
+
+	#socialmedia a:hover{
+    		-webkit-filter: opacity(1) grayscale(0%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+    		opacity: 1;
+	}
+
+	#socialmedia a img{
+		max-height: 50px;
+	}
+}
+
+/* mobile */
+@media only screen and (max-width: 1000px){
+	body{
+		font-size: 2em;
+	}
+
+	#header img
+	{
+		max-height: 160px;
+	}
+
+	#header
+	{
+		text-align: right;
+		max-height: 165px;
+		line-height: 165px;
+	}
+
+	#header em {
+		float: none;
+		width: inherit;
+	}
+
+	#header .title{
+	display: none;
+	}
+}
+
+
+body{
+	font-family: "Raleway";
+	font-weight: 400;
+	overflow: hidden;
+	width: 100%;
+	max-width: 100%;
+    	margin: 0;
+    	background-color: rgba(0,0,0,1);
+   }
+
+#header{
+	background: transparent;
+	vertical-align: middle;
+	overflow: hidden;
+	padding-top: 0;
+	padding-left: 0; /* padding right set in non-mobile */
+	padding-bottom: 0;
+	margin: 1.5% 0 0 0;
+	position: absolute;
+	width: 98%;
+}
+
+strong{
+	font-weight: 700;
+}
+
+.childnode, .grandchildnode
+{
+	cursor: hand;
+	cursor: pointer;
+}
+
+.nodetext, .gctext
+{
+	fill: white;
+	font-size: 20px;
+	font-weight: 200;
+	cursor: hand;
+	cursor: pointer;
+	-webkit-touch-callout: none;
+    	-webkit-user-select: none;
+    	-khtml-user-select: none;
+    	-moz-user-select: none;
+    	-ms-user-select: none;
+    	user-select: none;
+}
+
+.code{
+	font-family: "Coda";
+}
+
+line.link {
+	fill: none;
+	stroke-width: 1.5px;
+}
+
+.site-inner{
+	max-width: 100%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position-x: center;
+    	background-image: url(http://www.cpsharp.net/wp-content/uploads/2015/09/bg.png);
+}
+
+
+#header em{
+	font-style: normal;
+	}
+
+#footer{
+	position: absolute;
+	width: 100%;
+	top: 105px;
+	text-align: center;
+}
+
+#footer small{
+
+}
+
+#header img{
+	float:left;
+}
+
+.blue { color: rgb(22, 136, 155); }
+.purple{ color: rgb(158, 25, 127); }
+.red{ color: rgb(255, 96, 0); }
+.orange{ color: rgb(255, 175, 0);}
+
+a,
+.green
+{
+	color: rgb(53,162, 67);
+}
+
+nav {
+	display: none;
+}
+
+#page2 {
+	overflow: auto;
+	position: absolute;
+}
+
+.page-template-tooltemplate label
+{
+	display: inline-block;
+	width: 100px;
+}
+
+code {
+	padding: 10px;
+	border: 1px solid #000;
+	background: #FFF;
+	display: block;
+}

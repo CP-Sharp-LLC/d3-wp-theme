@@ -1,0 +1,100 @@
+.buttonHolder {
+    min-height: 70px;
+    width: 100%;
+    margin: 2em auto auto 39%;
+}
+
+.buttonHolder.hint{
+    font-family: 'TradeGothicLTStd-BdCn20', 'PT Sans Narrow', sans-serif;
+}
+
+.button {
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 12px 10px 0 rgba(0, 0, 0, 53), inset 0 4px 10px 1px white, inset 0 -5px 1px 1px rgba(204, 198, 197, .7);
+    float: left;
+    height: 70px;
+    margin: 0 3% 0 3%;
+    position: relative;
+    width: 70px;
+    -webkit-transition: all .1s linear;
+    transition-timing-function: linear;
+    transition: all .5s  ;
+}
+
+.button:after {
+    color: #e9e6e4;
+    content: "";
+    display: block;
+    font-size: 30px;
+    height: 30px;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px #bdb5b4, 1px 1px 1px white;
+    position: absolute;
+    width: 30px;
+}
+
+.button:active
+{
+    -webkit-transform: translate(2px,5px);
+    transform: translate(2px,5px);
+}
+
+
+.button:active {
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, .9), inset 0 -3px 1px 1px rgba(204, 198, 197, .5);
+}
+
+.button:active:after {
+    color: #FFF;
+    text-shadow: 0 -1px 1px #bdb5b4, 0 1px 1px white;
+}
+
+.tick:after {
+    transition-duration: .5s;    transition-property: all;
+    content: "✔";
+    left: 23px;    top: 20px;
+}
+
+.tick:hover {
+    background-color: #d1f4c1;
+    color: #0088cc;
+}
+
+.tick:hover:after {
+    color: #83d244;
+    text-shadow: 0 0 6px #00d244;
+}
+
+
+.cross:hover {
+    background-color: #f0ba9a;
+    color: #0088cc;
+}
+
+.cross:after {
+    transition-duration: .5s;
+    transition-property: all;
+    content: "✖";
+    left: 24px;
+    top: 19px;
+}
+
+.back:after {
+    transition-duration: .5s;
+    transition-property: all;
+    content: "←";
+    left: 24px;
+    top: 19px;
+}
+
+.back:hover {
+    background-color: #e3f07b;
+    color: #0088cc;
+}
+
+.cross:hover:after {
+    color: #eb2f2f;
+    text-shadow: 0 0 6px #eb2f2f;
+}
+

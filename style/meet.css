@@ -1,0 +1,74 @@
+#page2 {
+    font-size: 2em;
+    background: rgb(17, 81, 97) url(/wp-content/themes/cpsharp/images/bg/circuits.png) fixed repeat;
+}
+
+#div.meet div.promptbox h1 {
+    font-size: 2em;
+    padding-top: 1em;
+}
+
+div.meet {
+    color: #0088cc;
+}
+
+.bosstext {
+    float: right;
+    display: block;
+    width: 25%;
+}
+
+.promptbox {
+    padding-left: 4%;
+    padding-right: 4%;
+    width: 92%;
+    text-align: justify;
+}
+
+span.bosstext {
+    float: right;
+    text-align: right;
+    padding: 3%;
+}
+
+#page2 {
+    overflow: hidden;
+}
+
+.promptbox h1 {
+    font-family: "Raleway", sans-serif;
+    font-weight: 200;
+    text-align: center;
+    color: rgba(255, 175, 0, 1);
+    margin: 1em 0 .5em 0;
+}
+
+a.helphint
+{
+    border-bottom: 1px dashed #0088cc;
+    text-decoration: none;
+    color: inherit;
+}
+
+div.promptbox input {
+    background: rgba(173, 216, 230, .5);
+    transform: translate(0px, -7px);
+    border: 3px solid rgba(195, 241, 255, 0.25);
+    height: 2em;
+    margin-top: 0;
+    border-radius: 5px;
+}
+
+.fun
+{
+    color: #faa322;
+    font-size: .6em;
+
+}
+
+.promptbox label
+{
+    margin-top: 1.5em;
+    display: inline-block;
+    font-weight: 700;
+}
