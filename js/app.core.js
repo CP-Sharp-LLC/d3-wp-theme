@@ -1,4 +1,4 @@
-/* globals cp: false, App: false  */
+/* globals cp, App, d3 */
 
 function Logocolor(attributes) {
 	var lc = this;
@@ -26,7 +26,7 @@ Logocolor.prototype = {
 	toString: function () {
 		return this.a(1);
 	}
-}
+};
 
 
 function ChildNode(attributes) {
@@ -200,8 +200,14 @@ function GlobalManager()
 
 
 	this.nullundef = function(somevar){
-		if(somevar == null) return true;
-		if(typeof somevar == "undefined") return true;
+		if(somevar === null) {
+			return true;
+		}
+
+		if(typeof somevar === "undefined") {
+			return true;
+		}
+
 		return false;
 	};
 }

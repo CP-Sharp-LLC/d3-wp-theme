@@ -108,5 +108,3 @@ function get_d3childitems($cat) {
  * {tident: "webportfolio", text:"web design"},
  * ]}})
  */
-
-?>

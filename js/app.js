@@ -1,4 +1,4 @@
-/* globals GlobalManager: true  */
+/* globals GlobalManager, d3 */
 
 
 var cp = new GlobalManager();

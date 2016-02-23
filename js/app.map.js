@@ -1,6 +1,7 @@
+/* globals d3, App, Logocolor, cp */
 App.Map = {
 	// static properties
-	chargeMultiplier: .0006,
+	chargeMultiplier: 0.0006,
 	radius: 0,
 	vertexcount: 50,
 	steps: [10],
@@ -9,7 +10,7 @@ App.Map = {
 	childradius: 15,
 	p2: $("#page2"),
 	// dynamics
-	height: 0,	width: 0,	interval: null,	svg: [], mainNode: null, force: null,
+	height: 0,	width: 0,	interval: 0,	svg: [], mainNode: null, force: null,
 	links: [],	nodes: [],	currentstep: null,	currentvertex: 0, currentvertexoffset: 1,
 	charge: 0, selectedparent: null,
 
@@ -30,7 +31,7 @@ App.Map = {
 
 	init: function() {
 		this.resetlayout();
-		this.radius = this.height * .5;
+		this.radius = this.height * 0.5;
 		this.charge = this.width * this.height * this.chargeMultiplier;
 
 		this.currentlinkcolor = this.logocolors.lightlink.a(0.5);
@@ -38,20 +39,36 @@ App.Map = {
 		this.force = d3.layout.force()
 			.charge(function(d, i)
 				{
-					if(i == 0) return 0;
-					if(typeof d.childDetail != "undefined")
-						if(d.childDetail.selected) return - App.Map.charge * 150;
-					if(d.grandchild) return - App.Map.charge * 4;
+					if(i === 0) {
+						return 0;
+					}
+
+					if(typeof d.childDetail !== "undefined") {
+						if (d.childDetail.selected) {
+							return -App.Map.charge * 150;
+						}
+					}
+
+					if(d.grandchild) {
+						return - App.Map.charge * 4;
+					}
+
 					return - App.Map.charge;
 				})
 			.linkDistance(function(d, i){
-				if(i == 0) return 40;
-				if(d.grandchild) return App.Map.childradius * 10;
+				if(i === 0) {
+					return 40;
+				}
+
+				if(d.grandchild) {
+					return App.Map.childradius * 10;
+				}
+
 				return 20;
 			})
-			.friction(.55)
+			.friction(0.55)
 			.size([this.width, this.height])
-			.gravity(.12);
+			.gravity(0.12);
 
 		this.force.on("tick", this.tick);
 		this.force.on("end", this.jiggle);
@@ -104,20 +121,29 @@ App.Map = {
 		var circles = this.getcircles().data(nodeArray);
 		circles.enter().append("svg:circle");
 		circles.attr("r", function(d, i) {
-			if(i == 0) return 0;
+			if(i === 0) {
+                return 0;
+            }
+
 			return App.Map.vertexradius;
-			})
-			.attr("class",
-				function(d, i)
-				{
-					if(d.grandchild) return 'grandchildnode';
-					if(d.isChild) return 'vertex childnode threedee';
-					return i == 0 ? 'magic-vertex nonchildnode threedee' : 'vertex nonchildnode threedee';
-				})
-			.attr("id", function(d) { return d.ident;})
-			.attr("cx", function(d) { return d.x; })
-			.attr("cy", function(d) { return d.y; })
-			.attr("vertexindex", function(d, i) { return i; });
+        })
+        .attr("class",
+        function(d, i)
+        {
+            if(d.grandchild) {
+                return 'grandchildnode';
+            }
+
+            if(d.isChild) {
+                return 'vertex childnode threedee';
+            }
+
+            return i === 0 ? 'magic-vertex nonchildnode threedee' : 'vertex nonchildnode threedee';
+        })
+        .attr("id", function(d) { return d.ident;})
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; })
+        .attr("vertexindex", function(d, i) { return i; });
 		circles.call(App.Map.force.drag);
 		circles.exit().remove();
 	},
@@ -175,12 +201,15 @@ App.Map = {
 
 	jiggle: function(e)
 	{
-		if(App.debug) return;
-		if(e.alpha < .01)
+		/*if(App.debug) {
+            return;
+        }
+
+		if(e.alpha < 0.01)
 		{
 			// App.Map.UI.refresh();
 			// App.Map.force.alpha(.01);
-		}
+		}*/
 	}
 };
 
@@ -189,18 +218,20 @@ cp.addinit(App.Map, App.Map.init);
 App.Map.Data = {
 	nodeslice: function(target, i)
 	{
-	      App.Map.links.push({source: App.Map.nodes[i == App.Map.nodes.length - 2 ? 1 : i+2], target: target});
+	      App.Map.links.push({source: App.Map.nodes[i === App.Map.nodes.length - 2 ? 1 : i+2], target: target});
 	},
 
 	nodemap: function(d, i)
 	{
-		if(i == 0) return d;
+		if(i === 0) {
+            return d;
+        }
 
 		var xloc = App.Map.width/2+App.Map.radius*Math.cos((i*2*Math.PI/App.Map.vertexcount) - Math.PI/2);
 		var yloc = App.Map.width/2+App.Map.radius*Math.sin((i*2*Math.PI/App.Map.vertexcount) - Math.PI/2);
 
 		for (var j=0; j < App.childnodes.length; j++) {
-			if(App.childnodes[j].vertex == i){
+			if(App.childnodes[j].vertex === i){
 				return {
 					x:			xloc,
 					y:			yloc,
@@ -209,7 +240,7 @@ App.Map.Data = {
 					ident: "v" + i
 				};
 			}
-		};
+		}
 
 		return {
 			x:			xloc,
@@ -295,12 +326,12 @@ App.Map.Animate = {
 
 		var circles = App.Map.getcircles();
 
-		if(App.Map.currentvertexoffset == 0)
+		if(App.Map.currentvertexoffset === 0)
 		{
 			// hits after each bind
 			App.Map.Animate.mainAnimation(circles, stepInstruction);
 	  	}
-	  	else if(App.Map.currentvertexoffset != stepInstruction)
+	  	else if(App.Map.currentvertexoffset !== stepInstruction)
 	  	{
 	  		// every.single.cycle
 	  		App.Map.Animate.stepAnimation(circles, stepInstruction);
@@ -322,28 +353,28 @@ App.Map.Animate = {
 
 	mainAnimation: function(circles, stepInstruction)
 	{
-			// this circle
-			circles.filter(
-				function(d,i)
-				{
-					// sets current vertex color during animation
-					return App.Map.currentvertex == i;
-				}).style("fill", App.Map.logocolors.bluering);
+        // this circle
+        circles.filter(
+            function(d,i)
+            {
+                // sets current vertex color during animation
+                return App.Map.currentvertex === i;
+            }).style("fill", App.Map.logocolors.bluering);
 
-			// past circles
-			circles.filter(
-				function(d,i) {
-					return App.Map.currentvertex > i;
-				}).style("fill","gray");
+        // past circles
+        circles.filter(
+            function(d,i) {
+                return App.Map.currentvertex > i;
+            }).style("fill","gray");
 
-			// future circles
-			circles.filter(
-				function(d,i)
-				{
-					return App.Map.currentvertex < i ;
-				}).style("fill","#CCC");
+        // future circles
+        circles.filter(
+            function(d,i)
+            {
+                return App.Map.currentvertex < i ;
+            }).style("fill","#CCC");
 
-			App.Map.currentvertexoffset = App.Map.currentvertexoffset + (stepInstruction > 0 ? 1 : -1);
+        App.Map.currentvertexoffset = App.Map.currentvertexoffset + (stepInstruction > 0 ? 1 : -1);
 	},
 
 	stepAnimation: function(circles, stepInstruction)
@@ -352,7 +383,7 @@ App.Map.Animate = {
     	circles.filter(
 	    		function(d,i)
 	    		{
-	    			return App.Map.currentstep == i;
+	    			return App.Map.currentstep === i;
     			}).style("fill", App.Map.logocolors.redring);
 
     	App.Map.currentvertexoffset = App.Map.currentvertexoffset + (stepInstruction > 0 ? 1 : -1);
@@ -360,42 +391,44 @@ App.Map.Animate = {
 
 	bindNodeAnimation: function(circles)
 	{
+        App.Map.links.push({
+            source: App.Map.nodes.slice(1)[App.Map.currentvertex],
+            target: App.Map.nodes.slice(1)[App.Map.currentstep]
+        });
 
-		    App.Map.links.push({
-		    	source: App.Map.nodes.slice(1)[App.Map.currentvertex],
-		    	target: App.Map.nodes.slice(1)[App.Map.currentstep]
-	    	});
+        App.Map.drawlines();
+        App.Map.currentvertex++;
 
-		    App.Map.drawlines();
-		    App.Map.currentvertex++;
+        App.Map.force.links(App.Map.links);
+        App.Map.force.start();
 
-  			App.Map.force.links(App.Map.links);
-			App.Map.force.start();
+        if(App.debug) {
+            return;
+        }
 
-		    if(App.debug) return;
-		    App.Map.currentvertexoffset = 0;
+        App.Map.currentvertexoffset = 0;
 	},
 
 	finalize: function(circles)
 	{
 		// final fill at end of proc
-	    	App.Map.interval = null;
-	    	App.Map.getvertices().filter(function(d,i) { return !d.isChild;}).style("fill", "gray");
+        App.Map.interval = null;
+        App.Map.getvertices().filter(function(d,i) {return !d.isChild;}).style("fill", "gray");
 
-	    	var childverts = App.Map.getvertices().filter(function(d,i) { return d.isChild;});
+        var childverts = App.Map.getvertices().filter(function(d,i) { return d.isChild;});
 
-	    	childverts
-				.classed("childnode", true)
-				.on("mouseover", App.Map.UI.makehighlight)
-				.on("mouseout", App.Map.UI.unhighlight)
-				.on("click", App.Map.UI.expand)
-    			.style("fill", function(d) {return d.childDetail.color;});
+        childverts
+            .classed("childnode", true)
+            .on("mouseover", App.Map.UI.makehighlight)
+            .on("mouseout", App.Map.UI.unhighlight)
+            .on("click", App.Map.UI.expand)
+            .style("fill", function(d) {return d.childDetail.color;});
 
-			App.Map.svg.on("click", App.Map.UI.handleclick);
+        App.Map.svg.on("click", App.Map.UI.handleclick);
 
-  			App.Map.force.start();
+        App.Map.force.start();
 
-    		App.Map.UI.wakeup(childverts);
+        App.Map.UI.wakeup(childverts);
 	}
 };
 
