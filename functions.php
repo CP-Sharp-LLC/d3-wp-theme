@@ -66,7 +66,7 @@ add_action('genesis_header', 'cp_do_header');
 function cp_do_header() {
     echo '<div id="header">';
 	echo '<img src="/wp-content/uploads/2015/09/cropped-cpsharp11.png" alt="CP Sharp Logo">';
-	echo '<span class="title">Innovative</span><span class="title">Responsive</span><span class="title">Technology</span>';
+	echo '<span class="title">Innovative</span> <span class="title">Responsive</span> <span class="title">Technology</span>';
     echo '</div>';
 	echo '<div id="socialmedia"></div>';
 }
@@ -119,7 +119,6 @@ add_action('wp_ajax_nopriv_lazyload', 'cp_loadpage');
 add_action('wp_ajax_lazyload', 'cp_loadpage');
 
 function cp_loadpage(){
-    $post = get_posts(array('ID'=>$_POST['target']));
-    echo $post[0]->post_content;
+    echo get_post($_POST['target'])->post_content;
     die();
 }

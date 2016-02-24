@@ -13,7 +13,7 @@ class NavMapData {
 	public static function feed($cat) {
 		switch ($cat) {
 			case "aboutus" :
-				return new NavMapData ( "App.Map.logocolors.bluering", 2, "topleft" );
+				return new NavMapData ( "App.Map.logocolors.bluering", 2, "left" );
 			case "tech" :
 				return new NavMapData ( "App.Map.logocolors.greenring", 34, "bottom" );
 			case "services" :
