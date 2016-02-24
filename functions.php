@@ -71,15 +71,12 @@ function cp_do_header() {
 	echo '<div id="socialmedia"></div>';
 }
 
-//* Enqueue Scripts
-// Load Google fonts
 add_action('wp_enqueue_scripts', 'cp_google_fonts');
 function cp_google_fonts() {
 	wp_enqueue_style('google-fonts', 'http://fonts.googleapis.com/css?family=Coda|Raleway:400,700,200', array(), PARENT_THEME_VERSION);
 	wp_enqueue_style('google-fonts', "http://fonts.googleapis.com/css?family=PT+Sans+Narrow:regular,bold", array(), PARENT_THEME_VERSION);
 }
 
-//remove_action('genesis_after_header', 'genesis_do_nav');
 add_action('genesis_after_footer', 'cp_page2');
 function cp_page2(){
 	echo '<div id="page2">';
@@ -90,7 +87,6 @@ function cp_page2(){
 add_action('wp_enqueue_scripts', 'cp_d3_layout');
 
 function cp_d3_layout() {
-    wp_enqueue_script('cp-ajaxcaller');
 	wp_enqueue_script( 'jq', get_stylesheet_directory_uri() . '/lib/jquery.js', array(), '1.0.0', true );
 	wp_enqueue_script( 'jqcookie', get_stylesheet_directory_uri() . '/lib/jquery.cookie.js', array('jq'), '1.0.0', true );
 	wp_enqueue_script( 'd3', get_stylesheet_directory_uri() . '/lib/d3.js', array('jq'), '1.0.0', true );
@@ -99,11 +95,19 @@ function cp_d3_layout() {
 	wp_enqueue_script( 'gsease', get_stylesheet_directory_uri() . '/lib/gs.easepack.js', array('jq'), '1.0.0', true );
 
 	$prereqs = array('d3', 'gstween', 'gscss', 'gsease');
-	wp_enqueue_script( 'cpd3core', get_stylesheet_directory_uri() . '/js/app.core.js', $prereqs, '1.0.0', true );
+	wp_register_script( 'cpd3core', get_stylesheet_directory_uri() . '/js/app.core.js', $prereqs, '1.0.0', true );
+    $menudata = get_d3menudata();
+	wp_localize_script('cpd3core', 'cpd3coreserverside', array(
+		'childnodes' => $menudata
+	));
+	wp_enqueue_script('cpd3core');
 	array_push($prereqs, 'cpd3core');
+
 	wp_enqueue_script( 'cpd3app', get_stylesheet_directory_uri() . '/js/app.js', $prereqs, '1.0.0', true );
 	array_push($prereqs, 'cpd3app');
+
 	wp_enqueue_script( 'cpd3map', get_stylesheet_directory_uri() . '/js/app.map.js', $prereqs, '1.0.0', true );
+
 	wp_register_script( 'cpd3ui', get_stylesheet_directory_uri() . '/js/app.ui.js', $prereqs, '1.0.0', true );
     wp_localize_script( 'cpd3ui', 'cpd3uiserverside', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' )
@@ -115,27 +119,7 @@ add_action('wp_ajax_nopriv_lazyload', 'cp_loadpage');
 add_action('wp_ajax_lazyload', 'cp_loadpage');
 
 function cp_loadpage(){
-    $posts = new WP_Query();
-    echo get_bloginfo('title');
+    $post = get_posts(array('ID'=>$_POST['target']));
+    echo $post[0]->post_content;
     die();
 }
-
-/* Add new image sizes
-add_image_size('grid-thumbnail', 150, 150, TRUE);
-add_image_size('home-featured', 505, 210, TRUE);
-
-//* Reposition the secondary navigation
-remove_action('genesis_after_header', 'genesis_do_subnav');
-add_action('genesis_before_header', 'genesis_do_subnav');
-
-//* Customise Post Date
-add_filter('genesis_post_date_shortcode', 'nameless_post_date_shortcode', 10, 2);
-
-function nameless_post_date_shortcode($output, $atts) {
-    return sprintf('<span class="date time published" title="%4$s">%1$s<span class="day">%2$s</span><span class="month">%3$s</span></span>',
-        $atts['label'], get_the_time('j'), get_the_time('M'), get_the_time('Y-m-d\TH:i:sO'));
-}
-
-//* Define content width for Jetpack's tiled galleries
-if (!isset($content_width)) {$content_width = 1140;}
-*/

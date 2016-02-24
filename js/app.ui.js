@@ -332,6 +332,9 @@ App.Map.UI = {
 				},
 				success: function(result){
 					App.Map.p2.children('#page2content').html(result);
+				},
+				error: function(){
+					App.Map.UI.handlegoback();
 				}
 			});
 		callback();

@@ -1,4 +1,4 @@
-/* globals cp, App, d3 */
+/* globals cp, App, d3, cpd3coreserverside */
 
 function Logocolor(attributes) {
 	var lc = this;
@@ -20,9 +20,11 @@ Logocolor.prototype = {
 	a: function (alpha) {
 		return "rgba(" + this.r + "," + this.g + "," + this.b + "," + alpha + ")";
 	},
+
 	dark: function (depth) {
 		return "rgba(" + this.r / depth + "," + this.g / depth + "," + this.b / depth + ",1)";
 	},
+
 	toString: function () {
 		return this.a(1);
 	}
@@ -101,32 +103,29 @@ function GlobalManager()
 
 	this.socialmedia =
 	[
-		{image: "http://www.cpsharp.net/wp-content/uploads/2015/09/fb-e1442211516344.png", alt: "CP Sharp's facebook page", link: "https://www.facebook.com/cpsharpllc"},
-		{image: "http://www.cpsharp.net/wp-content/uploads/2015/09/gplus-e1442211509381.png", alt: "CP Sharp's Google+ page", link: "https://www.google.com/+CpsharpNet"},
-		{image: "http://www.cpsharp.net/wp-content/uploads/2015/09/linkedin-e1442211454767.png", alt: "CP Sharp's LinkedIn page", link: "https://www.linkedin.com/company/cp-sharp-llc"},
-		{image: "http://www.cpsharp.net/wp-content/uploads/2015/09/twitter-e1442211491176.png", alt: "CP Sharp's Twitter page", link: "https://twitter.com/cpsharpllc"}
+		{image: "/wp-content/uploads/2015/09/fb-e1442211516344.png", alt: "CP Sharp's facebook page", link: "https://www.facebook.com/cpsharpllc"},
+		{image: "/wp-content/uploads/2015/09/gplus-e1442211509381.png", alt: "CP Sharp's Google+ page", link: "https://www.google.com/+CpsharpNet"},
+		{image: "/wp-content/uploads/2015/09/linkedin-e1442211454767.png", alt: "CP Sharp's LinkedIn page", link: "https://www.linkedin.com/company/cp-sharp-llc"},
+		{image: "/wp-content/uploads/2015/09/twitter-e1442211491176.png", alt: "CP Sharp's Twitter page", link: "https://twitter.com/cpsharpllc"}
 	];
 
 	this.newcreate = function(){
 		var nodes = [];
-		nodes.push(new ChildNode({tident:"about", text:"about us", color: App.Map.logocolors.bluering, vertex: 2, image: "",
-				children: {branchDirection: "right",
-					items:
-					[
-						{tident: "team", text:"our team", target:"sideload.php?id=1"},
-						{tident: "clients", text:"our clients",target:"sideload.php?id=1"},
-						{tident: "founder", text:"founder",target:"sideload.php?id=1"},
-						{tident: "vision", text:"something",target:"sideload.php?id=1"},
-						{tident: "smth3", text:"vision",target:"sideload.php?id=1"},
-					]}
-			}));
+		var jsNodes = JSON.parse(cpd3coreserverside.childnodes);
+		for(var i = 0; i < jsNodes.length; i++)
+		{
+			jsNodes[i].color = eval(jsNodes[i].color);
+			nodes.push(new ChildNode(jsNodes[i]));
+		}
 
 		return nodes;
 	};
 
-	this.createchildnodes = function(){ return [
-			new ChildNode({tident:"about", text:"about us", color: App.Map.logocolors.bluering, vertex: 2, image: "",
-				children: {branchDirection: "right",
+	this.createchildnodes = function(){
+		return this.newcreate();
+		return [new ChildNode(
+				{tident:"about", text:"about us", color: App.Map.logocolors.bluering, vertex: 2, image: "",
+					children: {branchDirection: "right",
 					items:
 					[
 						{tident: "team", text:"our team", target:"sideload.php?id=1"},
@@ -135,7 +134,7 @@ function GlobalManager()
 						{tident: "vision", text:"something",target:"sideload.php?id=1"},
 						{tident: "smth3", text:"vision",target:"sideload.php?id=1"},
 					]}
-					}),
+				}),
 			new ChildNode({tident:"tech", text:"tech", color: App.Map.logocolors.greenring, vertex: 34, image: "",
 				children: {branchDirection: "bottom",
 					items:
@@ -161,7 +160,8 @@ function GlobalManager()
 					[
 						{tident: "webportfolio", text:"web design"},
 					]}})
-	];};
+			];
+	};
 
 	this.initqueue = [];
 	this.readyqueue = [];
