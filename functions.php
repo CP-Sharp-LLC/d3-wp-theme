@@ -10,26 +10,21 @@ remove_filter( 'the_excerpt', 'wpautop' );
 
 add_theme_support( 'genesis-responsive-viewport' );
 
-//* Force full width content layout
 add_filter( 'genesis_site_layout', '__genesis_return_full_width_content' );
 
-//* Enable HTML5 markup
 add_theme_support('html5');
 
-//* Enable HTML5 markup for galleries
 add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
 
-//* Add support for structural wraps
 add_theme_support('genesis-structural-wraps', array('header', 'nav', 'subnav', 'site-inner', 'inner', 'footer'));
 
-//* Add support for custom header
 add_theme_support('custom-header',
 array('header-selector' => '.site-title a',
 	'header-text' => false,
 	'height' => 125,
 	'width' => 162));
 
-remove_theme_support( 'genesis-footer-widgets', 1 );
+remove_theme_support( 'genesis-footer-widgets');
 
 genesis_unregister_layout( 'content-sidebar' );
 genesis_unregister_layout( 'sidebar-content' );

@@ -172,6 +172,123 @@ App.Map.UI = {
 		App.Map.UI.deselect();
 	},
 
+	allowmousemove: function(d, c)
+	{
+		App.Map.UI.mmallowed = true;
+		return App.Map.UI.d3teardown;
+	},
+
+	d3init: function(d, target, tweenInstance)
+	{
+		if(d.childDetail.tween.has(target))
+		{
+			d.childDetail.tween.get(target).kill();
+		}
+
+		d.childDetail.tween.set(target, tweenInstance);
+	},
+
+	d3teardown: function(d, target)
+	{
+		if(d.childDetail.tween.has(target))
+		{
+			d.childDetail.tween.remove(target);
+		}
+	},
+
+	d3caller: function(d, attr, target, tvalue)
+	{
+		d3.select(target).attr(attr, tvalue());
+	},
+
+	mouseunhighlight: function(d, i)
+	{
+		var target = d3.select(this);
+		App.Map.UI.unhighlight(d, target);
+	},
+
+	initdrag: function(s, i) {
+		App.Map.force.drag();
+	},
+
+	nextpage: function(d)
+	{
+		d3.event.stopPropagation();
+		App.Map.UI.loadnextpage(d.gcdetail.target, App.Map.UI.shownextpage);
+
+	},
+
+	shownextpage: function(overridecolor) {
+
+		var backcolor = cp.nullundef(overridecolor) ? App.Map.selectedparent.childDetail.color.a(0.4).toString() : overridecolor;
+
+		var windowHeight = $(window).height();
+		var windowWidth = $(window).width();
+		App.Map.p2.height($(window).height());
+		App.Map.p2.css('maxheight', windowHeight);
+		App.Map.p2.width($(window).width());
+		App.Map.p2.css('maxheight', windowWidth);
+
+		TweenLite.to(App.Map.svg, 1, {ease: Power3.easeOut, opacity: 0});
+		TweenLite.to(App.body, 1, { ease: Power3.easeOut, "background-color": backcolor});
+		TweenLite.to(cp, 1,
+			{ease: Power3.easeIn,scroll:App.Map.p2.offset().top,
+				onComplete: App.Map.UI.handlegoback,
+				onUpdate: cp.updatescroll,
+				onUpdateParams: [function() { return cp.scroll; }]});
+	},
+
+	setp2bg: function(imageurl) {
+		App.Map.p2.css("background-image", "url(" + imageurl + ")");
+		App.Map.p2.css("background-size", "cover");
+		App.Map.p2.css("background-position-x", "center");
+		App.Map.p2.css("background-repeat", "no-repeat");
+	},
+
+	loadnextpage: function(target, callback)
+	{
+		$.ajax(
+			cpd3uiserverside.ajaxurl,
+			{
+				type: 'post',
+				data: {
+					action: 'lazyload',
+					target: target
+				},
+				success: function(result){
+					App.Map.p2.children('#page2content').html(result);
+				},
+				error: function(){
+					App.Map.UI.handlegoback();
+				}
+			});
+		callback();
+	},
+
+	handlegoback: function()
+	{
+		d3.select("body")
+			.on("keyup", function()
+			{
+				if(d3.event.keyCode === cp.keycode.esc)
+				{
+					App.Map.UI.firstpage();
+				}
+			});
+	},
+
+	// direct screen back to the d3Map
+	firstpage: function()
+	{
+		d3.event.stopPropagation();
+		TweenLite.to(cp, 1, {ease: Power3.easeOut,scroll:0, onComplete: function(){App.Map.p2.height(0);}, onUpdate: cp.updatescroll,
+		onUpdateParams: [function() { return cp.scroll; }]});
+		TweenLite.to(App.Map.svg, 1, {ease: Power2.easeIn, opacity: 1});
+		TweenLite.to(App.body, 1, { ease: Power3.easeIn, "background-color": App.Map.selectedparent.childDetail.color.dark(6).toString()});
+		App.Map.force.start();
+	},
+
+	// animation and hooking of page listening events post-intro
 	wakeup: function(childnodes){
 		App.Map.gettexts().data(childnodes.data()).enter()
 			.append("svg:text")
@@ -246,119 +363,4 @@ App.Map.UI = {
 			);
 		});
 	},
-
-	allowmousemove: function(d, c)
-	{
-		App.Map.UI.mmallowed = true;
-		return App.Map.UI.d3teardown;
-	},
-
-	d3init: function(d, target, tweenInstance)
-	{
-		if(d.childDetail.tween.has(target))
-		{
-			d.childDetail.tween.get(target).kill();
-		}
-
-		d.childDetail.tween.set(target, tweenInstance);
-	},
-
-	d3teardown: function(d, target)
-	{
-		if(d.childDetail.tween.has(target))
-		{
-			d.childDetail.tween.remove(target);
-		}
-	},
-
-	d3caller: function(d, attr, target, tvalue)
-	{
-		d3.select(target).attr(attr, tvalue());
-	},
-
-	mouseunhighlight: function(d, i)
-	{
-		var target = d3.select(this);
-		App.Map.UI.unhighlight(d, target);
-	},
-
-	initdrag: function(s, i) {
-		App.Map.force.drag();
-	},
-
-	nextpage: function(d)
-	{
-		d3.event.stopPropagation();
-		App.Map.UI.loadnextpage(d.gcdetail.target, App.Map.UI.shownextpage);
-
-	},
-
-	shownextpage: function(overridecolor) {
-		var backcolor = overridecolor === null ? App.Map.selectedparent.childDetail.color.a(0.4).toString() : overridecolor;
-
-		var windowHeight = $(window).height();
-		var windowWidth = $(window).width();
-		App.Map.p2.height($(window).height());
-		App.Map.p2.css('maxheight', windowHeight);
-		App.Map.p2.width($(window).width());
-		App.Map.p2.css('maxheight', windowWidth);
-
-		TweenLite.to(App.Map.svg, 1, {ease: Power3.easeOut, opacity: 0});
-		TweenLite.to(App.body, 1, { ease: Power3.easeOut, "background-color": backcolor});
-		TweenLite.to(cp, 1,
-			{ease: Power3.easeIn,scroll:App.Map.p2.offset().top,
-				onComplete: App.Map.UI.handlegoback,
-				onUpdate: cp.updatescroll,
-				onUpdateParams: [function() { return cp.scroll; }]});
-	},
-
-	setp2bg: function(imageurl) {
-		App.Map.p2.css("background-image", "url(" + imageurl + ")");
-		App.Map.p2.css("background-size", "cover");
-		App.Map.p2.css("background-position-x", "center");
-		App.Map.p2.css("background-repeat", "no-repeat");
-	},
-
-	loadnextpage: function(target, callback)
-	{
-		$.ajax(
-			// this.gcdetail.target,
-			cpd3uiserverside.ajaxurl,
-			{
-				type: 'post',
-				data: {
-					action: 'lazyload',
-					target: target
-				},
-				success: function(result){
-					App.Map.p2.children('#page2content').html(result);
-				},
-				error: function(){
-					App.Map.UI.handlegoback();
-				}
-			});
-		callback();
-	},
-
-	handlegoback: function()
-	{
-		d3.select("body")
-			.on("keyup", function()
-			{
-				if(d3.event.keyCode === cp.keycode.esc)
-				{
-					App.Map.UI.firstpage();
-				}
-			});
-	},
-
-	firstpage: function()
-	{
-		d3.event.stopPropagation();
-		TweenLite.to(cp, 1, {ease: Power3.easeOut,scroll:0, onComplete: function(){App.Map.p2.height(0);}, onUpdate: cp.updatescroll,
-		onUpdateParams: [function() { return cp.scroll; }]});
-		TweenLite.to(App.Map.svg, 1, {ease: Power2.easeIn, opacity: 1});
-		TweenLite.to(App.body, 1, { ease: Power3.easeIn, "background-color": App.Map.selectedparent.childDetail.color.dark(6).toString()});
-		App.Map.force.start();
-	}
 };

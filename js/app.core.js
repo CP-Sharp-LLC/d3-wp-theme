@@ -109,58 +109,16 @@ function GlobalManager()
 		{image: "/wp-content/uploads/2015/09/twitter-e1442211491176.png", alt: "CP Sharp's Twitter page", link: "https://twitter.com/cpsharpllc"}
 	];
 
-	this.newcreate = function(){
+	this.createchildnodes = function(){
 		var nodes = [];
 		var jsNodes = JSON.parse(cpd3coreserverside.childnodes);
 		for(var i = 0; i < jsNodes.length; i++)
 		{
-			jsNodes[i].color = eval(jsNodes[i].color);
+			jsNodes[i].color = App.Map.logocolors[jsNodes[i].color];
 			nodes.push(new ChildNode(jsNodes[i]));
 		}
 
 		return nodes;
-	};
-
-	this.createchildnodes = function(){
-		return this.newcreate();
-		return [new ChildNode(
-				{tident:"about", text:"about us", color: App.Map.logocolors.bluering, vertex: 2, image: "",
-					children: {branchDirection: "right",
-					items:
-					[
-						{tident: "team", text:"our team", target:"sideload.php?id=1"},
-						{tident: "clients", text:"our clients",target:"sideload.php?id=1"},
-						{tident: "founder", text:"founder",target:"sideload.php?id=1"},
-						{tident: "vision", text:"something",target:"sideload.php?id=1"},
-						{tident: "smth3", text:"vision",target:"sideload.php?id=1"},
-					]}
-				}),
-			new ChildNode({tident:"tech", text:"tech", color: App.Map.logocolors.greenring, vertex: 34, image: "",
-				children: {branchDirection: "bottom",
-					items:
-					[
-						{tident: "blog", text:"blog"},
-					]}}),
-			new ChildNode({tident:"service", text:"services", color: App.Map.logocolors.purplering, vertex: 18, image: "",
-				children: {branchDirection: "topleft",
-					items:
-					[
-						{tident: "mobile", text:"mobile apps"},
-						{tident: "web", text:"web design"},
-					]}}),
-			new ChildNode({tident:"contact", text:"contact", color: App.Map.logocolors.redring, vertex: 26, image: "",
-				children: {branchDirection: "bottomleft",
-					items:
-					[
-						{tident: "email", text:"email"},
-					]}}),
-			new ChildNode({tident:"portfolio", text:"folio", color: App.Map.logocolors.orangering, vertex: 50, image: "",
-				children: {branchDirection: "top",
-					items:
-					[
-						{tident: "webportfolio", text:"web design"},
-					]}})
-			];
 	};
 
 	this.initqueue = [];

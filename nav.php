@@ -13,15 +13,15 @@ class NavMapData {
 	public static function feed($cat) {
 		switch ($cat) {
 			case "aboutus" :
-				return new NavMapData ( "App.Map.logocolors.bluering", 2, "left" );
+				return new NavMapData ( "bluering", 2, "left" );
 			case "tech" :
-				return new NavMapData ( "App.Map.logocolors.greenring", 34, "bottom" );
+				return new NavMapData ( "greenring", 34, "bottom" );
 			case "services" :
-				return new NavMapData ( "App.Map.logocolors.purplering", 18, "topleft" );
+				return new NavMapData ( "purplering", 18, "topleft" );
 			case "contact" :
-				return new NavMapData ( "App.Map.logocolors.redring", 26, "bottomleft" );
+				return new NavMapData ( "redring", 26, "bottomleft" );
 			case "folio" :
-				return new NavMapData ( "App.Map.logocolors.orangering", 50, "top" );
+				return new NavMapData ( "orangering", 50, "top" );
 		}
 
 		return null;
@@ -34,7 +34,15 @@ function get_d3menudata() {
 	$menuitems = array();
 
 	foreach ( $parentnodes as $node ) {
-		$childitems = get_d3childitems ( $node->slug );
+		$childitems = array ();
+		$catitems = get_posts( array ( 'category_name' => $node->slug, 'posts_per_page' => -1 ) );
+		foreach ( $catitems as $item ) {
+			array_push ( $childitems, array (
+				'tident' => $item->ID,
+				'text' => $item->post_title,
+				'target' => $item->ID
+			) );
+		}
 
 		$hacky = NavMapData::feed($node->slug);
 		
@@ -53,18 +61,4 @@ function get_d3menudata() {
 	}
 	
 	return json_encode ( $menuitems );
-}
-
-function get_d3childitems($cat) {
-	$childitems = array ();
-	$catitems = get_posts( array ( 'category_name' => $cat, 'posts_per_page' => -1 ) );
-	foreach ( $catitems as $item ) {
-		array_push ( $childitems, array (
-				'tident' => $item->ID,
-				'text' => $item->post_title,
-				'target' => $item->ID
-		) );
-	}
-	
-	return $childitems;
 }
