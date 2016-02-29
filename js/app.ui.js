@@ -1,4 +1,4 @@
-/* globals d3, cp, App, TweenLite, Power1, Power2, Power3, Back, cpd3uiserverside */
+/* globals d3, cp, App, TweenLite, Power1, Power2, Power3, Back, cpd3coreserverside */
 
 App.Map.UI = {
 	ready: false,
@@ -221,82 +221,95 @@ App.Map.UI = {
 
 	fireaction: function(d)
 	{
-		App.Map.nextpage(d);
+        App.Map.UI.loadnextpage(d.gcdetail.target);
 	},
 
-	// page2 actions
-	nextpage: function(d)
-	{
-		d3.event.stopPropagation();
-		App.Map.UI.loadnextpage(d.gcdetail.target, App.Map.UI.shownextpage);
-	},
-
-	shownextpage: function(overridecolor)
-	{
-		var backcolor = cp.nullundef(overridecolor) ? App.Map.selectedparent.childDetail.color.a(0.4).toString() : overridecolor;
-
-		var windowHeight = $(window).height();
-		var windowWidth = $(window).width();
-		App.Map.p2.height($(window).height());
-		App.Map.p2.css('maxheight', windowHeight);
-		App.Map.p2.width($(window).width());
-		App.Map.p2.css('maxheight', windowWidth);
-
-		TweenLite.to(App.Map.svg, 1, { ease: Power3.easeOut, opacity: 0 });
-		TweenLite.to(App.body, 1, { ease: Power3.easeOut, "background-color": backcolor });
-		TweenLite.to(cp, 1, {
-				ease: Power3.easeIn,
-				scroll:App.Map.p2.offset().top,
-				onComplete: App.Map.UI.handlegoback,
-				onUpdate: cp.updatescroll,
-				onUpdateParams: [function() { return cp.scroll; }]});
-	},
-
-	setp2bg: function(imageurl)
-	{
+	setp2bg: function(imageurl)	{
 		App.Map.p2.css("background-image", "url(" + imageurl + ")");
 		App.Map.p2.css("background-size", "cover");
 		App.Map.p2.css("background-position-x", "center");
 		App.Map.p2.css("background-repeat", "no-repeat");
 	},
 
-	loadnextpage: function(target, callback)
+    newcontent: {
+        modalelement: $('#modal-container'),
+        modalcontent: $('#modal-content'),
+        page2element: App.Map.p2.children('#page2content'),
+        show: {
+            scrolldown: function (content) {
+                var backcolor = cp.nullundef(content.overridecolor) ? App.Map.selectedparent.childDetail.color.a(0.4).toString() : content.overridecolor;
+
+                var windowHeight = $(window).height();
+                var windowWidth = $(window).width();
+                App.Map.p2.height($(window).height());
+                App.Map.p2.css('maxheight', windowHeight);
+                App.Map.p2.width($(window).width());
+                App.Map.p2.css('maxheight', windowWidth);
+
+                TweenLite.to(App.Map.svg, 1, { ease: Power3.easeOut, opacity: 0 });
+                TweenLite.to(App.body, 1, { ease: Power3.easeOut, "background-color": backcolor });
+                TweenLite.to(cp, 1, {
+                    ease: Power3.easeIn,
+                    scroll:App.Map.p2.offset().top,
+                    onUpdate: cp.updatescroll,
+                    onUpdateParams: [function() { return cp.scroll; }]});
+                App.Map.UI.newcontent.page2element.html(content);
+            },
+            dialog: function (content) {
+                App.Map.UI.newcontent.modalcontent.html(content);
+                App.Map.UI.newcontent.modalelement.removeAttr('class').addClass('seven');
+            }
+        },
+        setup: {
+            scrolldown: function(teardown){
+                d3.select("body").on("keyup", function() {
+                    if(d3.event.keyCode === cp.keycode.esc) {
+                        teardown('escapekey');
+                    }
+                });
+            },
+            dialog: function(teardown){
+                App.Map.UI.newcontent.modalelement.click(function() {
+                    teardown('click');
+                });
+            }
+        },
+
+        hide: {
+            scrolldown: function (info) {
+                d3.event.stopPropagation();
+                TweenLite.to(cp, 1, {ease: Power3.easeOut,scroll:0, onComplete: function(){App.Map.p2.height(0);}, onUpdate: cp.updatescroll,
+                    onUpdateParams: [function() { return cp.scroll; }]});
+                TweenLite.to(App.Map.svg, 1, {ease: Power2.easeIn, opacity: 1});
+                TweenLite.to(App.body, 1, { ease: Power3.easeIn, "background-color": App.Map.selectedparent.childDetail.color.dark(6).toString()});
+                App.Map.force.start();
+            },
+            dialog: function (info) {
+                App.Map.UI.newcontent.modalelement.addClass('out');
+            }
+        },
+    },
+
+	loadnextpage: function(target)
 	{
 		$.ajax(
-			cpd3uiserverside.ajaxurl, {
+			cp.server.ajaxurl, {
 				type: 'post',
 				data: {
 					action: 'lazyload',
 					target: target
 				},
 				success: function(result){
-					App.Map.p2.children('#page2content').html(result);
+					var data = JSON.parse(result);
+					if(!data.error){
+                        App.Map.UI.newcontent.show[data.displaytype](data.content);
+                        App.Map.UI.newcontent.setup[data.displaytype](App.Map.UI.newcontent.hide[data.displaytype]);
+                    }
 				},
-				error: function(){
-					App.Map.UI.handlegoback();
+				error: function(info){
+					// App.Map.UI.handlegoback();
 				}
 			});
-		callback();
-	},
-
-	handlegoback: function()
-	{
-		d3.select("body").on("keyup", function() {
-			if(d3.event.keyCode === cp.keycode.esc)
-			{
-				App.Map.UI.firstpage();
-			}
-		});
-	},
-
-	firstpage: function()
-	{
-		d3.event.stopPropagation();
-		TweenLite.to(cp, 1, {ease: Power3.easeOut,scroll:0, onComplete: function(){App.Map.p2.height(0);}, onUpdate: cp.updatescroll,
-		onUpdateParams: [function() { return cp.scroll; }]});
-		TweenLite.to(App.Map.svg, 1, {ease: Power2.easeIn, opacity: 1});
-		TweenLite.to(App.body, 1, { ease: Power3.easeIn, "background-color": App.Map.selectedparent.childDetail.color.dark(6).toString()});
-		App.Map.force.start();
 	},
 
 	// animation and hooking of page listening events post-intro

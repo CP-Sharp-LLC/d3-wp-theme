@@ -52,23 +52,19 @@
 	}
 
 	#socialmedia a{
-    		filter: gray; /* IE6-9 */
-    		opacity: 0.5;
-    		-webkit-filter: opacity(0.5) grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
-		-webkit-transition: all .5s ease; /* Fade to color for Chrome and Safari */
-		transition: all .5s ease;
-		padding-bottom: 20%;
+			-webkit-transition: all .5s ease; /* Fade to color for Chrome and Safari */
+			transition: all .5s ease;
+			padding-bottom: 20%;
     		padding-top: 20%;
     		display:block;
 	}
 
-	#socialmedia a:hover{
-    		-webkit-filter: opacity(1) grayscale(0%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
-    		opacity: 1;
+	#socialmedia a img {
+		max-height: 50px;
 	}
 
-	#socialmedia a img{
-		max-height: 50px;
+	.site-inner{
+		background-size: contain;
 	}
 }
 
@@ -98,8 +94,30 @@
 	#header .title{
 	display: none;
 	}
-}
 
+	.site-inner{
+		background-size: cover;
+		-ms-background-position-y: top;
+		background-position-y: top;
+	}
+
+	header .wrap{
+		position: absolute;
+		width: 100%;
+	}
+
+	#socialmedia
+	{
+		line-height: 145px;
+		float: right;
+	}
+
+	#socialmedia a img{
+		max-height: 35px;
+		padding-left: 1px;
+		padding-right: 2px;
+	}
+}
 
 body{
 	font-family: "Raleway";
@@ -141,11 +159,11 @@ strong{
 	cursor: hand;
 	cursor: pointer;
 	-webkit-touch-callout: none;
-    	-webkit-user-select: none;
-    	-khtml-user-select: none;
-    	-moz-user-select: none;
-    	-ms-user-select: none;
-    	user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .code{
@@ -159,10 +177,9 @@ line.link {
 
 .site-inner{
 	max-width: 100%;
-	background-size: contain;
 	background-repeat: no-repeat;
 	background-position-x: center;
-    	background-image: url(http://www.cpsharp.net/wp-content/uploads/2015/09/bg.png);
+	background-image: url(http://www.cpsharp.net/wp-content/uploads/2015/09/bg.png);
 }
 
 
@@ -217,3 +234,56 @@ code {
 	background: #FFF;
 	display: block;
 }
+
+#socialmedia a:nth-child(1){
+    animation: flicker 5s ease 5.2s infinite;
+}
+#socialmedia a:nth-child(2){
+    animation: flicker 5s ease 5.4s infinite;
+}
+#socialmedia a:nth-child(3){
+    animation: flicker 5s ease 5.6s infinite;
+}
+#socialmedia a:nth-child(4){
+    animation: flicker 5s ease 5.8s infinite;
+}
+#socialmedia a:nth-child(5){
+    animation: flicker 5s ease 6s infinite;
+}
+#socialmedia a {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    -webkit-filter: opacity(0.5) grayscale(100%);
+}
+
+#socialmedia a:hover{
+    -webkit-filter: opacity(1) grayscale(0%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/*@keyframes flicker {
+    0%{
+        opacity: 0.5;
+        filter: grayscale(100%);
+        -webkit-filter: opacity(0.5) grayscale(100%);
+    }
+
+    20%{
+        opacity: 0.35;
+        filter: grayscale(50%);
+        -webkit-filter: opacity(0.35) grayscale(50%);
+    }
+
+    50%{
+        opacity: 0.35;
+        filter: grayscale(25%);
+        -webkit-filter: opacity(0.35) grayscale(25%);
+    }
+
+   100%{
+        opacity: 0.5;
+        filter: grayscale(100%);
+       -webkit-filter: opacity(0.5) grayscale(100%);
+    }
+}*/

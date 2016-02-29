@@ -101,14 +101,17 @@ function GlobalManager()
 		}
 	};
 
-	this.socialmedia =
-	[
+	this.socialmedia = [
 		{image: "/wp-content/uploads/2015/09/fb-e1442211516344.png", alt: "CP Sharp's facebook page", link: "https://www.facebook.com/cpsharpllc"},
 		{image: "/wp-content/uploads/2015/09/gplus-e1442211509381.png", alt: "CP Sharp's Google+ page", link: "https://www.google.com/+CpsharpNet"},
 		{image: "/wp-content/uploads/2015/09/linkedin-e1442211454767.png", alt: "CP Sharp's LinkedIn page", link: "https://www.linkedin.com/company/cp-sharp-llc"},
 		{image: "/wp-content/uploads/2016/02/GitHub-Mark-Light-120px-plus.png", alt: "CP Sharp's GitHub page", link: "https://github.com/cpsharp"},
 		{image: "/wp-content/uploads/2015/09/twitter-e1442211491176.png", alt: "CP Sharp's Twitter page", link: "https://twitter.com/cpsharpllc"},
 	];
+
+	this.server = {
+		ajaxurl: cpd3coreserverside.ajaxurl,
+	};
 
 	this.createchildnodes = function(){
 		var nodes = [];
