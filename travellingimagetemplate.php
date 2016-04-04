@@ -33,13 +33,7 @@ $(document).ready(function() {
 			break;
 		}
 	}
-    var sawIntro = $.cookie('usersawintro');
-    var delayLength = 5000;
-    if(sawIntro)
-    {
-        delayLength = 1;
-    }
-    $.cookie('usersawintro', true);
+
 	setTimeout(function () { App.Map.UI.shownextpage(new Logocolor({ r:0, g:41, b:51}).a(1));} , delayLength);
 })
 </script>

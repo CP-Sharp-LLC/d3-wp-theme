@@ -55,7 +55,7 @@ ChildNode.prototype =
 function GlobalManager()
 {
 	this.keycode = {esc: 27};
-
+	this.sawIntro = function() { return $.cookie('usersawintro');};
 	this.angles = {
 		"top": function(index, qty) {
 			var anglearea = 180; // half circle

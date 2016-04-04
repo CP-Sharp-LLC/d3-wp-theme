@@ -1,4 +1,6 @@
 /* globals d3, App, Logocolor, cp */
+var templove = {"error":false,"content":"<p class='exploder' layout='{ \"x\":\"0.32\", \"y\":\"0.58\", \"d\": \"0.15\", \"tl\": \"-0.05\", \"tw\": \"0.16\" }'>\r\n    <span class='heading'>Responsive Framework</span>\r\n    <span class='blurb'>Providing the best shopping experience for any device.</span>\r\n</p>\r\n<p class='exploder' layout='{ \"x\":\"0.4\", \"y\":\"0.8\", \"d\": \"0.18\", \"tl\": \"-0.05\", \"tw\": \"0.16\" }'>\r\n    <span class='heading'>Website Architecture</span>\r\n    <span class='blurb'>Improvement of website structure and user experience.</span>\r\n</p>\r\n<p class='exploder' layout='{ \"x\":\"0.85\", \"y\":\"0.58\", \"d\": \"0.18\", \"tl\": \"-0.05\", \"tw\": \"0.16\" }'>\r\n    <span class='heading'>Data Migration and Storage</span>\r\n    <span class='blurb'>Secure storage and processing of sensitive information, including existing data.</span>\r\n</p>\r\n<p class='exploder' layout='{ \"x\":\"0.32\", \"y\":\"0.58\", \"d\": \"0.15\", \"tl\": \"-0.05\", \"tw\": \"0.16\" }'>\r\n    <span class='heading'>App Integration</span>\r\n    <span class='blurb'>Extend the power of your platform, improve your marketing footprint.</span>\r\n</p>","displaytype":["scrolldown2"],"bgimage":["http://www.cpsharp.net/wp-content/uploads/2016/03/giraffee.png"]}
+
 App.Map = {
 	// static properties
 	chargeMultiplier: 0.0006,
@@ -100,7 +102,11 @@ App.Map = {
 
 	    this.drawcircles();
 	    this.drawlines();
-	    this.interval = setTimeout(App.Map.Animate.go, this.animationSpeed);
+		
+		
+
+	    this.interval = setTimeout(App.Map.Animate.go, cp.sawIntro ? 0 : this.animationSpeed);
+		$.cookie('usersawintro', true);
 	},
 
 	drawcircles: function()

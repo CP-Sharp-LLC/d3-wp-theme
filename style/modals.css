@@ -1,9 +1,3 @@
-/* shamelessly stolen from http://codepen.io/designcouch/pen/obvKxm */
-
-/** {
-    box-sizing: border-box;
-}*/
-
 html.modal-active, body.modal-active  {
     overflow: hidden;
 }
@@ -18,144 +12,7 @@ html.modal-active, body.modal-active  {
     transform: scale(0);
     z-index: 1;
 }
-/*
-#modal-container.one {
-    transform: scaleY(0.01) scaleX(0);
-    animation: unfoldIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.one .modal-background .modal {
-    transform: scale(0);
-    animation: zoomIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.one.out {
-    transform: scale(1);
-    animation: unfoldOut 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.one.out .modal-background .modal {
-    animation: zoomOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.two {
-    transform: scale(1);
-}
-#modal-container.two .modal-background {
-    background: transparent;
-    animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.two .modal-background .modal {
-    opacity: 0;
-    animation: scaleUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.two + .content {
-    animation: scaleBack 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.two.out {
-    animation: quickScaleDown 0s .5s linear forwards;
-}
-#modal-container.two.out .modal-background {
-    animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.two.out .modal-background .modal {
-    animation: scaleDown 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.two.out + .content {
-    animation: scaleForward 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.three {
-    z-index: 0;
-    transform: scale(1);
-}
-#modal-container.three .modal-background {
-    background: rgba(0, 0, 0, 0.6);
-}
-#modal-container.three .modal-background .modal {
-    animation: moveUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.three + .content {
-    z-index: 1;
-    animation: slideUpLarge 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.three.out .modal-background .modal {
-    animation: moveDown 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.three.out + .content {
-    animation: slideDownLarge 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.four {
-    z-index: 0;
-    transform: scale(1);
-}
-#modal-container.four .modal-background {
-    background: rgba(0, 0, 0, 0.7);
-}
-#modal-container.four .modal-background .modal {
-    animation: blowUpModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.four + .content {
-    z-index: 1;
-    animation: blowUpContent 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.four.out .modal-background .modal {
-    animation: blowUpModalTwo 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.four.out + .content {
-    animation: blowUpContentTwo 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.five {
-    transform: scale(1);
-}
-#modal-container.five .modal-background {
-    background: transparent;
-    animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.five .modal-background .modal {
-    transform: translateX(-1500px);
-    animation: roadRunnerIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-*/
-/*#modal-container.five.out {
-    animation: quickScaleDown 0s .5s linear forwards;
-}
-#modal-container.five.out .modal-background {
-    animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.five.out .modal-background .modal {
-    animation: roadRunnerOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}*/
-/*
-#modal-container.six {
-    transform: scale(1);
-}
-#modal-container.six .modal-background {
-    background: transparent;
-    animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.six .modal-background .modal {
-    background-color: transparent;
-    animation: modalFadeIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.six .modal-background .modal h2, #modal-container.six .modal-background .modal p {
-    opacity: 0;
-    position: relative;
-    animation: modalContentFadeIn 0.5s 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.six .modal-background .modal .modal-svg rect {
-    animation: sketchIn 0.5s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.six.out {
-    animation: quickScaleDown 0s .5s linear forwards;
-}
-#modal-container.six.out .modal-background {
-    animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.six.out .modal-background .modal {
-    animation: modalFadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.six.out .modal-background .modal h2, #modal-container.six.out .modal-background .modal p {
-    animation: modalContentFadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.six.out .modal-background .modal .modal-svg rect {
-    animation: sketchOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}*/
+
 #modal-container.seven {
     transform: scale(1);
 }
@@ -185,23 +42,6 @@ html.modal-active, body.modal-active  {
 #modal-container.seven.out .modal-background .modal {
     animation: roadRunnerOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
-
-/*#modal-container.seven.out {
-    animation: slowFade .5s 1.5s linear forwards;
-}
-#modal-container.seven.out .modal-background {
-    background-color: rgba(0, 0, 0, 0.7);
-    animation: fadeToRed 2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.seven.out .modal-background .modal {
-    border-radius: 3px;
-    height: 162px;
-    width: 227px;
-    animation: killShot 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-#modal-container.seven.out .modal-background .modal h2, #modal-container.seven.out .modal-background .modal p {
-    animation: modalContentFadeOut 0.5s 0.5 cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}*/
 
 #modal-container .modal-background {
     display: table-cell;
@@ -540,4 +380,95 @@ html.modal-active, body.modal-active  {
     100% {
         transform: scale(0);
     }
+}
+div.backcontainer {
+    position: absolute;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border: solid 1px rgba(221, 221, 221, 0.13);
+    background-color: rgba(255, 255, 255, .2);
+    width: 4%;
+    left: 5.5%;
+    padding-top: 5%;
+    color: rgb(131, 131, 134);
+    padding-top: 5%;
+    text-align: center;
+    transition: all 400ms ease;
+    font-size: 3em;
+    top: -2%;
+    cursor: pointer;
+}
+
+div.backcontainer:hover{
+    color: #B9747E;
+    padding-top: 1%;
+    padding-bottom: 4%;
+    background: rgba(238, 238, 238, 0.42);
+    border: solid 1px #BBBBBB;
+}
+/* main container here */
+div.back {
+    position: absolute;
+}
+
+div.back svg{
+    transform: scale(0.6) rotate(90deg);
+}
+
+/* pretty lines */
+path.bar {
+    fill: none;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke: rgba(168,76,89,.85);
+    stroke-dasharray: 88px 600px;
+    -webkit-transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+path.bar.top {
+    stroke-dashoffset: -7px;
+    -webkit-transform: translateX(50%);
+    transform: translateX(50%);
+}
+path.bar.bottom {
+    stroke-dashoffset: -315px;
+    -webkit-transform: translateX(-39%);
+    transform: translateX(-39%);
+}
+
+div.anim path.bar {
+    stroke-width: 5px;
+    stroke: #00a2b9;
+}
+
+div.anim path.bar.top {
+    stroke-dasharray: 50px 600px;
+    stroke-dashoffset: -308px;
+}
+div.anim path.bar.bottom {
+    stroke-dasharray: 50px 600px;
+    stroke-dashoffset: -0px;
+}
+
+div.back svg {
+    -webkit-transition: all 400ms ease;
+    -moz-transition: all 400ms ease;
+    -ms-transition: all 400ms ease;
+    -o-transition: all 400ms ease;
+    transition: all 400ms ease;
+    transition-delay: 400ms;
+    position: absolute;
+    padding-top: 7em;
+    top: 0em;
+    left: 0;
+}
+
+div.anim.back svg{
+    top: -5em;
+}
+
+div.anim.back {
+    background-color: rgba(100, 100, 100, .2);
 }

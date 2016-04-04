@@ -1,134 +1,169 @@
 /* globals d3, cp, App, TweenLite, Power1, Power2, Power3, Back, cpd3coreserverside */
-
 App.Map.UI = {
-	ready: false,
-	mmallowed: false,
-	makehighlight: function(d)
+	ready        : false,
+	mmallowed    : false,
+	makehighlight: function (d)
 	{
-		if(!App.Map.UI.ready || !App.Map.UI.mmallowed ){ return; }
+		if (!App.Map.UI.ready || !App.Map.UI.mmallowed) {
+			return;
+		}
 
 		TweenLite.to(
 			App.body,
 			0.3, {
-				ease: Power1.easeOut,
-				"background-color": d.childDetail.color.dark(6).toString()
-			});
+				ease              : Power1.easeOut,
+				"background-color": d.childDetail.color.dark( 6 ).toString()
+			} );
 
 		TweenLite.to(
 			d.childDetail,
 			0.3, {
-				ease: Back.easeOut.config(4),
-				r: App.Map.childradius * 3.5,
-				onStart: App.Map.UI.d3init,
-				onStartParams: [d, "#" + d.ident, "{self}"],
-				onComplete: App.Map.UI.d3teardown,
-				onCompleteParams: [d, "#" + d.ident],
-				onUpdate: App.Map.UI.d3caller,
-				onUpdateParams: [d, "r", "#" + d.ident, function() { return d.childDetail.r; }]
-		});
+				ease            : Back.easeOut.config( 4 ),
+				r               : App.Map.childradius * 3.5,
+				onStart         : App.Map.UI.d3init,
+				onStartParams   : [ d, "#" + d.ident, "{self}" ],
+				onComplete      : App.Map.UI.d3teardown,
+				onCompleteParams: [ d, "#" + d.ident ],
+				onUpdate        : App.Map.UI.d3caller,
+				onUpdateParams  : [ d, "r", "#" + d.ident, function () {
+					return d.childDetail.r;
+				} ]
+			} );
 
 		TweenLite.to(
 			d.childDetail,
 			0.3, {
-				ease: Power3.easeOut,
-				textopacity:1,
-				onUpdate: App.Map.UI.d3caller,
-				onUpdateParams: [d, "fill-opacity", "#" + d.childDetail.tident, function() { return d.childDetail.textopacity; }]
-		});
+				ease          : Power3.easeOut,
+				textopacity   : 1,
+				onUpdate      : App.Map.UI.d3caller,
+				onUpdateParams: [ d, "fill-opacity", "#" + d.childDetail.tident, function () {
+					return d.childDetail.textopacity;
+				} ]
+			} );
 	},
 
-	unhighlight: function(d)
+	unhighlight: function (d)
 	{
-		if(d.childDetail.selected || !App.Map.UI.ready || !App.Map.UI.mmallowed ) {
+		if (d.childDetail.selected || !App.Map.UI.ready || !App.Map.UI.mmallowed) {
 			return;
 		}
 
-		TweenLite.to(App.body, 0.3, { ease: Power1.easeIn, "background-color": App.Map.logocolors.black.a(255).toString()});
+		TweenLite.to( App.body, 0.3, {
+			ease              : Power1.easeIn,
+			"background-color": App.Map.logocolors.black.a( 255 ).toString()
+		} );
 
-		TweenLite.to(d.childDetail, 0.3, {ease: Back.easeIn.config(4), r: App.Map.childradius,
-			onStart: App.Map.UI.d3init,
-			onStartParams: [d, "#" + d.ident, "{self}"],
-			onComplete: App.Map.UI.d3teardown,
-			onCompleteParams: [d, "#" + d.ident],
-			onUpdate: App.Map.UI.d3caller,
-			onUpdateParams: [d, "r", "#" + d.ident, function() {return d.childDetail.r; }]
-		});
+		TweenLite.to( d.childDetail, 0.3, {
+			ease            : Back.easeIn.config( 4 ), r: App.Map.childradius,
+			onStart         : App.Map.UI.d3init,
+			onStartParams   : [ d, "#" + d.ident, "{self}" ],
+			onComplete      : App.Map.UI.d3teardown,
+			onCompleteParams: [ d, "#" + d.ident ],
+			onUpdate        : App.Map.UI.d3caller,
+			onUpdateParams  : [ d, "r", "#" + d.ident, function () {
+				return d.childDetail.r;
+			} ]
+		} );
 
-		TweenLite.to(d.childDetail, 0.3, {ease: Power3.easeIn, textopacity:0,
-			onUpdate:App.Map.UI.d3caller,
-			onUpdateParams: [d, "fill-opacity", "#" + d.childDetail.tident,  function() {return d.childDetail.textopacity; }]});
+		TweenLite.to( d.childDetail, 0.3, {
+			ease          : Power3.easeIn, textopacity: 0,
+			onUpdate      : App.Map.UI.d3caller,
+			onUpdateParams: [ d, "fill-opacity", "#" + d.childDetail.tident, function () {
+				return d.childDetail.textopacity;
+			} ]
+		} );
 	},
 
-	expand: function(d)
+	expand: function (d)
 	{
 		var currentlySelected = d.childDetail.selected;
 		App.Map.UI.deselect();
 		d3.event.stopPropagation();
-		if(currentlySelected) {
+		if (currentlySelected) {
 			return;
 		}
 
 		d.childDetail.selected = true;
 		App.Map.selectedparent = d;
 
-		var gcnodes = d3.range(0, d.childDetail.children.items.length).map(App.Map.Data.gc.map);
-		var gcs = App.Map.getgrandchildren().data(gcnodes);
-		gcs.enter().append("circle")
-			.attr("class", "grandchildnode")
-			.attr("r", function(){return App.Map.childradius * 3;})
-			.attr("fill", function(){return "gray";})
-			.attr("cx", function(){return App.Map.selectedparent.x;})
-			.attr("cy", function(){return App.Map.selectedparent.y;})
-			.attr("fill-opacity", 0)
-			.on("click", App.Map.UI.nextpage)
-			.call(App.Map.force.drag);
+		var gcnodes = d3.range( 0, d.childDetail.children.items.length ).map( App.Map.Data.gc.map );
+		var gcs = App.Map.getgrandchildren().data( gcnodes );
+		gcs.enter().append( "circle" )
+			.attr( "class", "grandchildnode" )
+			.attr( "r", function () {
+				return App.Map.childradius * 3;
+			} )
+			.attr( "fill", function () {
+				return "gray";
+			} )
+			.attr( "cx", function () {
+				return App.Map.selectedparent.x;
+			} )
+			.attr( "cy", function () {
+				return App.Map.selectedparent.y;
+			} )
+			.attr( "fill-opacity", 0 )
+			.on( "click", App.Map.UI.nextpage )
+			.call( App.Map.force.drag );
 
 		gcs.exit().remove();
 
 		var grandchildren = App.Map.getgrandchildren();
-		var gctext = App.Map.getgctext().data(gcnodes);
-			gctext.enter()
-			.append("svg:text")
-			.classed("gctext", true)
-			.attr("id", function(d) { return d.gcdetail.tident; })
-			.attr("fill-opacity", 1)
-			.text(function(d) { return d.gcdetail.text;})
-			.on("click", App.Map.UI.fireaction)
-			.call(App.Map.UI.initdrag);
+		var gctext = App.Map.getgctext().data( gcnodes );
+		gctext.enter()
+			.append( "svg:text" )
+			.classed( "gctext", true )
+			.attr( "id", function (d) {
+				return d.gcdetail.tident;
+			} )
+			.attr( "fill-opacity", 1 )
+			.text( function (d) {
+				return d.gcdetail.text;
+			} )
+			.on( "click", App.Map.UI.fireaction )
+			.call( App.Map.UI.initdrag );
 
 		gctext.exit().remove();
 
 		grandchildren
-			.attr("fill", function(){return d.childDetail.color;})
-			.attr("fill-opacity", 1);
+			.attr( "fill", function () {
+				return d.childDetail.color;
+			} )
+			.attr( "fill-opacity", 1 );
 
-		gcnodes.slice().forEach(function(target, i)
+		gcnodes.slice().forEach( function (target, i)
 		{
 			App.Map.gccount++;
-			App.Map.nodes.push(gcnodes[i]);
-			App.Map.links.push({ source: d, target: gcnodes[i], grandchild: true });
-		});
+			App.Map.nodes.push( gcnodes[ i ] );
+			App.Map.links.push( { source: d, target: gcnodes[ i ], grandchild: true } );
+		} );
 
-		App.Map.force.nodes(App.Map.nodes);
-		App.Map.force.links(App.Map.links);
+		App.Map.force.nodes( App.Map.nodes );
+		App.Map.force.links( App.Map.links );
 
 		App.Map.drawlines();
 
 		App.Map.force.start();
 	},
 
-	destroygc: function()
+	destroygc: function ()
 	{
 		var grandchildren = App.Map.getgrandchildren();
 
 		grandchildren
-			.classed("grandchildnode", false)
-			.attr("fill", function(g, i){return "gray";})
-			.attr("cx", function(g, i){return App.Map.selectedparent.x;})
-			.attr("cy", function(g, i){return App.Map.selectedparent.y;})
-			.attr("fill-opacity", 0);
+			.classed( "grandchildnode", false )
+			.attr( "fill", function (g, i) {
+				return "gray";
+			} )
+			.attr( "cx", function (g, i) {
+				return App.Map.selectedparent.x;
+			} )
+			.attr( "cy", function (g, i) {
+				return App.Map.selectedparent.y;
+			} )
+			.attr( "fill-opacity", 0 );
 
-		while(App.Map.gccount !== 0)
+		while (App.Map.gccount !== 0)
 		{
 			App.Map.nodes.pop();
 			App.Map.links.pop();
@@ -141,36 +176,40 @@ App.Map.UI = {
 		App.Map.force.start();
 	},
 
-	deselect: function()
+	deselect: function ()
 	{
-		App.childnodes.filter(function(n) {return n.selected;})
-			.forEach(function(m)
+		App.childnodes.filter( function (n) {
+				return n.selected;
+			} )
+			.forEach( function (m)
 			{
 				m.selected = false;
-				var element = d3.select("#v" + m.vertex);
+				var element = d3.select( "#v" + m.vertex );
 				var data = element.data();
-				App.Map.UI.unhighlight(data[0], element[0][0]);
-			});
+				App.Map.UI.unhighlight( data[ 0 ], element[ 0 ][ 0 ] );
+			} );
 
 		App.Map.UI.destroygc();
 
 		App.Map.UI.refresh();
 	},
 
-	refresh: function()
+	refresh: function ()
 	{
-		if(!this.ready) {
+		if (!this.ready) {
 			return;
 		}
 
 		App.Map.gettexts()
-			.attr("x", function(d) {
-				return d.x - this.clientWidth/2;
-				})
-			.attr("y", function(d) {return d.y + 5;});
+			.attr( "x", function (d) {
+				return d.x - this.clientWidth / 2;
+			} )
+			.attr( "y", function (d) {
+				return d.y + 5;
+			} );
 	},
 
-	handleclick: function()
+	handleclick: function ()
 	{
 		if (d3.event.defaultPrevented) {
 			return;
@@ -179,213 +218,172 @@ App.Map.UI = {
 		App.Map.UI.deselect();
 	},
 
-	allowmousemove: function()
-	{
-		App.Map.UI.mmallowed = true;
-		return App.Map.UI.d3teardown;
-	},
+	allowmousemove: function ()
+	{ App.Map.UI.mmallowed = true; return App.Map.UI.d3teardown; },
 
-	d3init: function(d, target, tweenInstance)
+	d3init: function (d, target, tweenInstance)
 	{
-		if(d.childDetail.tween.has(target))
-		{
-			d.childDetail.tween.get(target).kill();
+		if (cp.nullundef( d.childDetail.tween )) {
+			return;
 		}
 
-		d.childDetail.tween.set(target, tweenInstance);
+		if (d.childDetail.tween.has( target ))
+		{
+			d.childDetail.tween.get( target ).kill();
+		}
+
+		d.childDetail.tween.set( target, tweenInstance );
 	},
 
-	d3teardown: function(d, target)
+	d3teardown: function (d, target)
 	{
-		if(d.childDetail.tween.has(target))
+		if (d.childDetail.tween.has( target ))
 		{
-			d.childDetail.tween.remove(target);
+			d.childDetail.tween.remove( target );
 		}
 	},
 
-	d3caller: function(d, attr, target, tvalue)
+	d3caller: function (d, attr, target, tvalue)
 	{
-		d3.select(target).attr(attr, tvalue());
+		d3.select( target ).attr( attr, tvalue() );
 	},
 
-	mouseunhighlight: function(d)
+	mouseunhighlight: function (d)
 	{
-		var target = d3.select(this);
-		App.Map.UI.unhighlight(d, target);
+		var target = d3.select( this );
+		App.Map.UI.unhighlight( d, target );
 	},
 
-	initdrag: function()
+	initdrag: function ()
 	{
 		App.Map.force.drag();
 	},
 
-	fireaction: function(d)
+	fireaction: function (d)
 	{
-        App.Map.UI.loadnextpage(d.gcdetail.target);
+		App.Map.UI.loadnextpage( d.gcdetail.target );
 	},
 
-	setp2bg: function(imageurl)	{
-		App.Map.p2.css("background-image", "url(" + imageurl + ")");
-		App.Map.p2.css("background-size", "cover");
-		App.Map.p2.css("background-position-x", "center");
-		App.Map.p2.css("background-repeat", "no-repeat");
+	setp2bg: function (imageurl) {
+		App.Map.p2.css( "background-image", "url(" + imageurl + ")" );
+		App.Map.p2.css( "background-size", "cover" );
+		App.Map.p2.css( "background-position-x", "center" );
+		App.Map.p2.css( "background-repeat", "no-repeat" );
 	},
 
-    newcontent: {
-        modalelement: $('#modal-container'),
-        modalcontent: $('#modal-content'),
-        page2element: App.Map.p2.children('#page2content'),
-        show: {
-            scrolldown: function (content) {
-                var backcolor = cp.nullundef(content.overridecolor) ? App.Map.selectedparent.childDetail.color.a(0.4).toString() : content.overridecolor;
-
-                var windowHeight = $(window).height();
-                var windowWidth = $(window).width();
-                App.Map.p2.height($(window).height());
-                App.Map.p2.css('maxheight', windowHeight);
-                App.Map.p2.width($(window).width());
-                App.Map.p2.css('maxheight', windowWidth);
-
-                TweenLite.to(App.Map.svg, 1, { ease: Power3.easeOut, opacity: 0 });
-                TweenLite.to(App.body, 1, { ease: Power3.easeOut, "background-color": backcolor });
-                TweenLite.to(cp, 1, {
-                    ease: Power3.easeIn,
-                    scroll:App.Map.p2.offset().top,
-                    onUpdate: cp.updatescroll,
-                    onUpdateParams: [function() { return cp.scroll; }]});
-                App.Map.UI.newcontent.page2element.html(content);
-            },
-            dialog: function (content) {
-                App.Map.UI.newcontent.modalcontent.html(content);
-                App.Map.UI.newcontent.modalelement.removeAttr('class').addClass('seven');
-            }
-        },
-        setup: {
-            scrolldown: function(teardown){
-                d3.select("body").on("keyup", function() {
-                    if(d3.event.keyCode === cp.keycode.esc) {
-                        teardown('escapekey');
-                    }
-                });
-            },
-            dialog: function(teardown){
-                App.Map.UI.newcontent.modalelement.click(function() {
-                    teardown('click');
-                });
-            }
-        },
-
-        hide: {
-            scrolldown: function (info) {
-                d3.event.stopPropagation();
-                TweenLite.to(cp, 1, {ease: Power3.easeOut,scroll:0, onComplete: function(){App.Map.p2.height(0);}, onUpdate: cp.updatescroll,
-                    onUpdateParams: [function() { return cp.scroll; }]});
-                TweenLite.to(App.Map.svg, 1, {ease: Power2.easeIn, opacity: 1});
-                TweenLite.to(App.body, 1, { ease: Power3.easeIn, "background-color": App.Map.selectedparent.childDetail.color.dark(6).toString()});
-                App.Map.force.start();
-            },
-            dialog: function (info) {
-                App.Map.UI.newcontent.modalelement.addClass('out');
-            }
-        },
-    },
-
-	loadnextpage: function(target)
+	loadnextpage: function (target)
 	{
+		console.log( "called loadnextpage with " + target );
 		$.ajax(
 			cp.server.ajaxurl, {
-				type: 'post',
-				data: {
+				type   : 'post',
+				data   : {
 					action: 'lazyload',
 					target: target
 				},
-				success: function(result){
-					var data = JSON.parse(result);
-					if(!data.error){
-                        App.Map.UI.newcontent.show[data.displaytype](data.content);
-                        App.Map.UI.newcontent.setup[data.displaytype](App.Map.UI.newcontent.hide[data.displaytype]);
-                    }
+				success: function (result) {
+					var data = JSON.parse( result );
+					if (!data.error) {
+						App.Map.UI.shuttle( data );
+					}
 				},
-				error: function(info){
+				error  : function (info) {
 					// App.Map.UI.handlegoback();
 				}
-			});
+			} );
 	},
 
-	// animation and hooking of page listening events post-intro
-	wakeup: function(childnodes)
+	shuttle: function (data)
 	{
-		App.Map.gettexts().data(childnodes.data()).enter()
-			.append("svg:text")
-			.classed("nodetext", true)
-			.attr("id", function(d) { return d.childDetail.tident; })
-			.attr("fill-opacity", 1)
-			.text(function(d) { return d.childDetail.text;})
-			.on("mouseover", App.Map.UI.makehighlight)
-			.on("mouseout", App.Map.UI.mouseunhighlight)
-			.on("click", App.Map.UI.expand)
-			.call(App.Map.force.drag);
+		App.Map.UI.Builder.show[ data.displaytype ]( data );
+		App.Map.UI.Builder.setup[ data.displaytype ]( App.Map.UI.Builder.hide[ data.displaytype ] );
+	},
+	// animation and hooking of page listening events post-intro
+	wakeup : function (childnodes)
+	{
+		App.Map.gettexts().data( childnodes.data() ).enter()
+			.append( "svg:text" )
+			.classed( "nodetext", true )
+			.attr( "id", function (d) {
+				return d.childDetail.tident;
+			} )
+			.attr( "fill-opacity", 1 )
+			.text( function (d) {
+				return d.childDetail.text;
+			} )
+			.on( "mouseover", App.Map.UI.makehighlight )
+			.on( "mouseout", App.Map.UI.mouseunhighlight )
+			.on( "click", App.Map.UI.expand )
+			.call( App.Map.force.drag );
 
 		this.ready = true;
-		App.Map.force.alpha(App.Map.force.alpha()*1.5);
+		App.Map.force.alpha( App.Map.force.alpha() * 1.5 );
 
 		var done = 0;
-		childnodes.each(function(d){
+		childnodes.each( function (d) {
 			TweenLite.to(
 				d.childDetail,
 				1, {
-					ease: Back.easeOut.config(4),
-					r: App.Map.childradius * 4,
-					onStart: App.Map.UI.d3init,
-					onStartParams: [d, "#" + d.ident, "{self}"],
-					onComplete: function() {
+					ease            : Back.easeOut.config( 4 ),
+					r               : App.Map.childradius * 4,
+					onStart         : App.Map.UI.d3init,
+					onStartParams   : [ d, "#" + d.ident, "{self}" ],
+					onComplete      : function () {
 						done++;
-						if(done === 5)
+						if (done === 5)
 						{
-							App.Map.gettexts().each(function(d){
+							App.Map.gettexts().each( function (d) {
+								if (cp.nullundef( d.childDetail )) {
+									d.childDetail = { textopacity: 0 };
+								}
+
 								d.childDetail.textopacity = 1;
-								TweenLite.to(d.childDetail, 0.5, {
-									ease: Power3.easeIn,
-									textopacity:0,
-									onUpdate: App.Map.UI.d3caller,
+								TweenLite.to( d.childDetail, 0.5, {
+									ease          : Power3.easeIn,
+									textopacity   : 0,
+									onUpdate      : App.Map.UI.d3caller,
 									onUpdateParams: [
 										d,
 										"fill-opacity",
 										"#" + d.childDetail.tident,
-										function() { return d.childDetail.textopacity; }]
-								});
+										function () {
+											return d.childDetail.textopacity;
+										} ]
+								} );
 
-								TweenLite.to(d.childDetail, 1.5,{
-									ease: Power1.easeOut,
-									r: App.Map.childradius,
-									onStart: App.Map.UI.d3init,
-									onStartParams: [d, "#" + d.ident, "{self}"],
-									onComplete: App.Map.UI.allowmousemove,
-									onCompleteParams: [d, "#" + d.ident],
-									onUpdate: App.Map.UI.d3caller,
-									onUpdateParams: [
+								TweenLite.to( d.childDetail, 1.5, {
+									ease            : Power1.easeOut,
+									r               : App.Map.childradius,
+									onStart         : App.Map.UI.d3init,
+									onStartParams   : [ d, "#" + d.ident, "{self}" ],
+									onComplete      : App.Map.UI.allowmousemove,
+									onCompleteParams: [ d, "#" + d.ident ],
+									onUpdate        : App.Map.UI.d3caller,
+									onUpdateParams  : [
 										d,
 										"r",
 										"#" + d.ident,
-										function() { return d.childDetail.r; }]
-								});
-							});
+										function () {
+											return d.childDetail.r;
+										} ]
+								} );
+							} );
 
 							return App.Map.UI.d3teardown;
 						}
 					},
-					onCompleteParams: [d, "#" + d.ident],
-					onUpdate: App.Map.UI.d3caller,
-					onUpdateParams: [
+					onCompleteParams: [ d, "#" + d.ident ],
+					onUpdate        : App.Map.UI.d3caller,
+					onUpdateParams  : [
 						d,
 						"r",
 						"#" + d.ident,
-						function() {
+						function () {
 							return d.childDetail.r;
 						}
 					]
 				}
 			);
-		});
+		} );
 	},
 };

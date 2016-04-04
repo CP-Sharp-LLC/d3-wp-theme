@@ -262,6 +262,9 @@ code {
     opacity: 1;
 }
 
+#page2content{
+	overflow-x: hidden;
+}
 /*@keyframes flicker {
     0%{
         opacity: 0.5;

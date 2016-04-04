@@ -98,3 +98,7 @@
     text-shadow: 0 0 6px #eb2f2f;
 }
 
+a {
+    padding:15px;
+    display:block;
+}
