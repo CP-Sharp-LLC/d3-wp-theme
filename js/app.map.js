@@ -68,9 +68,9 @@ App.Map = {
 
 				return 20;
 			})
-			.friction(0.55)
+			//.friction(0.85)
 			.size([this.width, this.height])
-			.gravity(0.12);
+			//.gravity(0.12);
 
 		this.force.on("tick", this.tick);
 		this.force.on("end", this.jiggle);
@@ -102,8 +102,6 @@ App.Map = {
 
 	    this.drawcircles();
 	    this.drawlines();
-		
-		
 
 	    this.interval = setTimeout(App.Map.Animate.go, cp.sawIntro ? 0 : this.animationSpeed);
 		$.cookie('usersawintro', true);

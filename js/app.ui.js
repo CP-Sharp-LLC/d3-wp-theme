@@ -103,7 +103,9 @@ App.Map.UI = {
 				return App.Map.selectedparent.y;
 			} )
 			.attr( "fill-opacity", 0 )
-			.on( "click", App.Map.UI.nextpage )
+			.on( "click", App.Map.UI.fireaction )
+			.on("mouseover", App.Map.UI.overaction )
+			.on("mouseout", App.Map.UI.outaction )
 			.call( App.Map.force.drag );
 
 		gcs.exit().remove();
@@ -121,7 +123,7 @@ App.Map.UI = {
 				return d.gcdetail.text;
 			} )
 			.on( "click", App.Map.UI.fireaction )
-			.call( App.Map.UI.initdrag );
+			.call( App.Map.force.drag );
 
 		gctext.exit().remove();
 
@@ -262,6 +264,20 @@ App.Map.UI = {
 	fireaction: function (d)
 	{
 		App.Map.UI.loadnextpage( d.gcdetail.target );
+	},
+
+	overaction: function (d, e, f)
+	{
+		console.log( d );
+		console.log( e );
+		console.log( f );
+	},
+
+	outaction: function (d, e, f)
+	{
+		console.log( d );
+		console.log( e );
+		console.log( f );
 	},
 
 	setp2bg: function (imageurl) {
